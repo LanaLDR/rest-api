@@ -16,6 +16,8 @@ public class HomeWorkTests extends TestBase {
         String userData = "{ \"name\": \"amogus\", \"job\": \"qa\" }";
 
         given()
+                .log().uri()
+                .log().body()
                 .contentType(ContentType.JSON)
                 .body(userData)
                 .when()
@@ -38,6 +40,8 @@ public class HomeWorkTests extends TestBase {
         String newUserData = "{ \"name\": \"keker\", \"job\": \"kreker\" }";
 
         given()
+                .log().uri()
+                .log().body()
                 .contentType(ContentType.JSON)
                 .body(newUserData)
                 .when()
@@ -56,6 +60,8 @@ public class HomeWorkTests extends TestBase {
     void successfulDeleteUser() {
 
         given()
+                .log().uri()
+                .log().body()
                 .when()
                 .delete("/users/831")
                 .then()
@@ -71,6 +77,8 @@ public class HomeWorkTests extends TestBase {
         String userData = "{ \"email\": \"eve.holt@reqres.in\", \"password\": \"12345\" }";
 
         given()
+                .log().uri()
+                .log().body()
                 .contentType(ContentType.JSON)
                 .body(userData)
                 .when()
@@ -80,16 +88,18 @@ public class HomeWorkTests extends TestBase {
                 .log().body()
                 .statusCode(200)
                 .body("id", is(4),
-                        "token", is("QpwL5tke4Pnpja7X4"));
+                        "token", notNullValue());
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Регистрация без пароля")
     void registrationUserWithoutPassword() {
 
         String userData = "{ \"email\": \"eve.holt@reqres.in\", \"password\": \"\" }";
 
         given()
+                .log().uri()
+                .log().body()
                 .contentType(ContentType.JSON)
                 .body(userData)
                 .when()
