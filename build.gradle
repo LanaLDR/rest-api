@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id "io.qameta.allure" version "2.11.2"
+    id "io.freefair.lombok" version "8.3"
 }
 
 group 'qa.guru'
@@ -9,15 +11,29 @@ repositories {
     mavenCentral()
 }
 
+def restAssuredVersion = '5.3.2',
+    allureVersion = '2.24.0'
+
 dependencies {
     testImplementation (
             'org.aspectj:aspectjweaver:1.9.20.1',
             'org.junit.jupiter:junit-jupiter:5.9.3',
-            'io.qameta.allure:allure-selenide:2.24.0',
-            'io.rest-assured:rest-assured:5.3.2'
+            'org.assertj:assertj-core:3.6.1',
+            'org.aeonbits.owner:owner:1.0.12',
+            "io.rest-assured:rest-assured:$restAssuredVersion",
+            "io.rest-assured:json-schema-validator:$restAssuredVersion",
+            "io.qameta.allure:allure-rest-assured:$allureVersion"
     )
 }
 
-test {
+compileJava {
+    options.encoding = 'UTF-8'
+}
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test) {
+    systemProperties(System.getProperties())
     useJUnitPlatform()
 }

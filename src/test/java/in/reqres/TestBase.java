@@ -1,13 +1,14 @@
 package in.reqres;
 
-import io.restassured.RestAssured;
+import in.reqres.config.ApiConfigProvider;
 import org.junit.jupiter.api.BeforeAll;
 
 public class TestBase {
 
+    static final ApiConfigProvider provider = new ApiConfigProvider();
+
     @BeforeAll
     static void beforeAll() {
-        RestAssured.baseURI = "https://reqres.in";
-        RestAssured.basePath = "/api";
+        provider.setUp();
     }
 }
