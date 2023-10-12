@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static in.reqres.specs.RegistrationSpec.*;
-import static in.reqres.specs.UserSpec.*;
+import static in.reqres.specs.BaseSpec.*;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -25,12 +24,12 @@ public class HomeWorkTests extends TestBase {
 
         UserResponseModel response =
                 step("Отправка запроса создания пользователя", () ->
-                        given(createOrUpdateUserRequestSpec)
+                        given(requestSpec)
                                 .body(userData)
                                 .when()
                                 .post("/users")
                                 .then()
-                                .spec(createUser201ResponseSpec)
+                                .spec(responseSpecWithStatus201)
                                 .extract().as(UserResponseModel.class));
 
         step("Проверка полей ответа", () -> {
@@ -50,12 +49,12 @@ public class HomeWorkTests extends TestBase {
 
         UserResponseModel response =
                 step("Отправка запроса обновления пользователя", () ->
-                        given(createOrUpdateUserRequestSpec)
+                        given(requestSpec)
                                 .body(newUserData)
                                 .when()
                                 .put("/users/831")
                                 .then()
-                                .spec(updateUser200ResponseSpec)
+                                .spec(responseSpecWithStatus200)
                                 .extract().as(UserResponseModel.class));
 
         step("Проверка полей ответа", () -> {
@@ -69,11 +68,11 @@ public class HomeWorkTests extends TestBase {
     @DisplayName("Удаление пользователя")
     void successfulDeleteUser() {
         step("Отправка запроса удаления пользователя", () ->
-                given(deleteUserRequestSpec)
+                given(requestSpec)
                         .when()
                         .delete("/users/831")
                         .then()
-                        .spec(deleteUser204ResponseSpec));
+                        .spec(responseSpecWithStatus204));
     }
 
     @Test
@@ -85,12 +84,12 @@ public class HomeWorkTests extends TestBase {
 
         RegistrationResponseModel response =
                 step("Отправка запроса регистрации пользователя", () ->
-                        given(registrationRequestSpec)
+                        given(requestSpec)
                                 .body(userData)
                                 .when()
                                 .post("/register")
                                 .then()
-                                .spec(registration200ResponseSpec)
+                                .spec(responseSpecWithStatus200)
                                 .extract().as(RegistrationResponseModel.class));
 
         step("Проверка полей ответа", () -> {
@@ -107,12 +106,12 @@ public class HomeWorkTests extends TestBase {
 
         RegistrationResponseModel response =
                 step("Отправка запроса регистрации без пароля", () ->
-                        given(registrationRequestSpec)
+                        given(requestSpec)
                                 .body(userData)
                                 .when()
                                 .post("/register")
                                 .then()
-                                .spec(registrationWithoutPassword400ResponseSpec)
+                                .spec(responseSpecWithStatus400)
                                 .extract().as(RegistrationResponseModel.class));
 
         step("Проверка полей ответа", () -> {
@@ -125,11 +124,11 @@ public class HomeWorkTests extends TestBase {
     void successfulGetUsersList() {
         UsersListResponseModel response =
                 step("Отправка запроса на получение списка пользователей", () ->
-                        given(usersListRequestSpec)
+                        given(requestSpec)
                                 .when()
                                 .get("/users?page=2")
                                 .then()
-                                .spec(showUsersList200RequestSpec)
+                                .spec(responseSpecWithStatus200)
                                 .extract().as(UsersListResponseModel.class));
 
         List<UsersListResponseModel.User> users = response.getData();
